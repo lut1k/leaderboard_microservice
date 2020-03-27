@@ -17,4 +17,4 @@ class LeaderBoard(models.Model):
         return "user_id--{}, rating--{}".format(self.user_id, self.rating)
 
     class Meta:
-        ordering = ['rating', '-date_time']
+        ordering = ['position', '-date_time']

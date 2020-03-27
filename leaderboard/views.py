@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from rest_framework.generics import ListAPIView
+from leaderboard.models import LeaderBoard
+from leaderboard.pagination import CustomPagination
+from leaderboard.serializers import LeaderBoardSerializer
 
-# Create your views here.
+
+class LeaderBoardAPIView(ListAPIView):
+    queryset = LeaderBoard.objects.all()
+    serializer_class = LeaderBoardSerializer
+    pagination_class = CustomPagination
