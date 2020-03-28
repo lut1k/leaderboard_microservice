@@ -19,6 +19,5 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(url='leaderboard/all_players')),
     path('leaderboard/', include('leaderboard.urls'), name='leader-board'),
 ]

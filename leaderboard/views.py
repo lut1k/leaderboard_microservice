@@ -1,13 +1,13 @@
 from rest_framework.generics import ListAPIView
 from leaderboard.models import LeaderBoard
-from leaderboard.pagination import CustomPagination
+from leaderboard.pagination import PageNumberPagination
 from leaderboard.serializers import LeaderBoardSerializer
 
 
 class LeaderBoardAPIView(ListAPIView):
     queryset = LeaderBoard.objects.all()
     serializer_class = LeaderBoardSerializer
-    pagination_class = CustomPagination
+    pagination_class = PageNumberPagination
 
     def get_queryset(self):
         player_position = self.request.GET.get('position')
@@ -18,4 +18,4 @@ class LeaderBoardAPIView(ListAPIView):
         elif filter_field == 'after':
             queryset = LeaderBoard.objects.filter(position__gt=player_position)
             return queryset
-        return super(LeaderBoardAPIView, self).get_queryset()
+        return super().get_queryset()
