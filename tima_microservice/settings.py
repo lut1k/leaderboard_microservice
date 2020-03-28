@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'leaderboard.pagination.CustomPagination',
+    'DEFAULT_PAGINATION_CLASS': 'leaderboard.pagination.PageNumberPagination',
 }
 
 MIDDLEWARE = [
