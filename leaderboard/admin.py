@@ -4,9 +4,6 @@ from leaderboard.models import LeaderBoard
 
 
 class LeaderBoardAdmin(admin.ModelAdmin):
-    class Meta:
-        model = LeaderBoard
-
     list_display = ['position', 'rating', 'user_id', 'date_time']
     ordering = ['user_id']
     list_filter = ['rating']
