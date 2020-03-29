@@ -5,6 +5,7 @@ class LeaderBoard(models.Model):
     class Meta:
         ordering = ['position', '-date_time']
 
+
     user_id = models.IntegerField(unique=True)
     rating = models.FloatField()
     date_time = models.DateTimeField()
