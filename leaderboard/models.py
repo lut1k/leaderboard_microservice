@@ -3,7 +3,7 @@ from django.db import models
 
 class LeaderBoard(models.Model):
     class Meta:
-        ordering = ['rating', '-date_time']
+        ordering = ['position', '-date_time']
 
     user_id = models.IntegerField(unique=True)
     rating = models.FloatField()
