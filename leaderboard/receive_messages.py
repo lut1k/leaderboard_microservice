@@ -3,6 +3,7 @@ import json
 import datetime
 import sys
 import traceback
+from leaderboard.models import LeaderBoard
 
 
 AMQP_USER = 'admin'
@@ -10,20 +11,21 @@ AMQP_PASSWORD = 'admin'
 AMQP_HOST = 'localhost'
 AMQP_PORT = 5672
 AMQP_VIRTUALHOST = '/'
+AMQP_EXCHANGE_NAME = 'leaderboard_exchange'
+AMQP_ROUTING_KEY = 'leaderboard_key'
 
 
 def callback(channel, method, properties, body):
-    print(" [x] Received {}".format(body))
-
     message = json.loads(body)
+    player_attributes = {
+        'user_id': message['user_id'],
+        'rating': message['rating'],
+        'date_time': datetime.datetime.fromtimestamp(message['datetime']),
+        'position': message['position']
+    }
 
-    print('user_id : {}, rating : {}, datetime : {}'.format(
-        message['user_id'],
-        message['rating'],
-        datetime.datetime.fromtimestamp(message['datetime']),
-    ))
-
-    print('[x] Done.')
+    player = LeaderBoard(**player_attributes)
+    player.save()
 
     channel.basic_ack(delivery_tag=method.delivery_tag)
 
@@ -35,12 +37,18 @@ def main():
 
     channel = connection.channel()
 
-    channel.queue_declare(queue='leaderboard_queue', durable=True)
+    result = channel.queue_declare(queue='', durable=True, exclusive=True)
+    queue_name = result.method.queue
+
+    channel.queue_bind(queue=queue_name,
+                       exchange=AMQP_EXCHANGE_NAME,
+                       routing_key=AMQP_ROUTING_KEY,
+                       )
 
     print(" [*] Waiting for messages. To exit press CTRL + C.")
 
     channel.basic_consume(
-        queue='leaderboard_queue',
+        queue=queue_name,
         on_message_callback=callback,
     )
 
