@@ -22,8 +22,8 @@ def main():
 
     channel.exchange_declare(exchange=AMQP_EXCHANGE_NAME, exchange_type='direct')
 
-    index = 100
-    while index < 150:
+    index = 103
+    while index < 104:
         message = {
             'user_id': index,
             'rating': round(random.uniform(1, 10), 1),
