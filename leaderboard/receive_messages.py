@@ -7,12 +7,11 @@ from leaderboard.models import LeaderBoard
 from tima_microservice.settings import AMQP_SETTINGS
 
 
-AMQP_EXCHANGE_NAME = 'leaderboard_exchange'
-AMQP_ROUTING_KEY = 'leaderboard_key'
-
-
 class RecevieMessages:
-    def callback(self, channel, method, properties, body):
+    # TODO нужно ли описывать конструктор???
+
+    @staticmethod
+    def callback(channel, method, properties, body):
         message = json.loads(body)
         player_attributes = {
             'user_id': message['user_id'],
@@ -46,8 +45,8 @@ class RecevieMessages:
         queue_name = result.method.queue
 
         channel.queue_bind(queue=queue_name,
-                           exchange=AMQP_EXCHANGE_NAME,
-                           routing_key=AMQP_ROUTING_KEY,
+                           exchange=AMQP_SETTINGS["AMQP_EXCHANGE_NAME"],
+                           routing_key=AMQP_SETTINGS["AMQP_ROUTING_KEY"],
                            )
 
         print(" [*] Waiting for messages. To exit press CTRL + C.")
