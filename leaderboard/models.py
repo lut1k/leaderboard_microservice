@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, IntegrityError
 
 
 class LeaderBoard(models.Model):
@@ -16,6 +16,7 @@ class LeaderBoard(models.Model):
     def save(self, *args, **kwargs):
         try:
             super().save(*args, **kwargs)
-            print("Created user.") # TODO пилить отчет о сохранении.
-        except:  # TODO обработать исключения, если user_id же существует.
-            print("Key user_id already exists")
+            # TODO каким образом уведомлять о сохранении? И надо ли.
+            print("Created user with user_id <{}>.".format(self.user_id))
+        except IntegrityError:
+            print("user_id - {} is all ready exist".format(self.user_id))

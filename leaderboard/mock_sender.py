@@ -24,15 +24,14 @@ class MockSender:
 
         channel.exchange_declare(exchange=AMQP_SETTINGS["AMQP_EXCHANGE_NAME"], exchange_type='direct')
 
-        index = 106
-        while index < 107:
+        index = 1
+        while index:
             message = {
                 'user_id': index,
                 'rating': round(random.uniform(1, 10), 1),
                 'datetime': int(time.time()),
                 'position': index,  # TODO убарть позицию из сообщения после изучения memcached.
             }
-
             channel.basic_publish(
                 exchange=AMQP_SETTINGS["AMQP_EXCHANGE_NAME"],
                 routing_key=AMQP_SETTINGS["AMQP_ROUTING_KEY"],
@@ -43,8 +42,8 @@ class MockSender:
             )
 
             print(" [x] Sent {}".format(message))
-
             index += 1
+            time.sleep(0.02)
 
         connection.close()
 
