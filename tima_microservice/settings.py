@@ -98,6 +98,7 @@ AMQP_SETTINGS = {
     "AMQP_PORT": 5672,
     "AMQP_VIRTUALHOST": '/',
     "AMQP_EXCHANGE_NAME": 'leaderboard_exchange',
+    "AMQP_QUEUE_NAME": 'leaderboard_queue',
     "AMQP_ROUTING_KEY": 'leaderboard_key',
 }
 

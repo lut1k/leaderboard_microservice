@@ -3,13 +3,23 @@ import json
 import datetime
 import sys
 import traceback
+from django.conf import settings
 from leaderboard.models import LeaderBoard
-from tima_microservice.settings import AMQP_SETTINGS
+
+
+AMQP_SETTINGS = {
+    'AMQP_USER': settings.AMQP_SETTINGS['AMQP_USER'],
+    "AMQP_PASSWORD": settings.AMQP_SETTINGS['AMQP_PASSWORD'],
+    "AMQP_HOST": settings.AMQP_SETTINGS['AMQP_HOST'],
+    "AMQP_PORT": settings.AMQP_SETTINGS['AMQP_PORT'],
+    "AMQP_VIRTUALHOST": settings.AMQP_SETTINGS['AMQP_VIRTUALHOST'],
+    "AMQP_EXCHANGE_NAME": settings.AMQP_SETTINGS['AMQP_EXCHANGE_NAME'],
+    "AMQP_QUEUE_NAME": settings.AMQP_SETTINGS['AMQP_QUEUE_NAME'],
+    "AMQP_ROUTING_KEY": settings.AMQP_SETTINGS['AMQP_ROUTING_KEY'],
+}
 
 
 class RecevieMessages:
-    # TODO нужно ли описывать конструктор???
-
     @staticmethod
     def callback(channel, method, properties, body):
         message = json.loads(body)
@@ -41,18 +51,12 @@ class RecevieMessages:
         connection = self._get_connection()
         channel = connection.channel()
 
-        result = channel.queue_declare(queue='', durable=True, exclusive=True)
-        queue_name = result.method.queue
-
-        channel.queue_bind(queue=queue_name,
-                           exchange=AMQP_SETTINGS["AMQP_EXCHANGE_NAME"],
-                           routing_key=AMQP_SETTINGS["AMQP_ROUTING_KEY"],
-                           )
+        channel.queue_declare(queue=AMQP_SETTINGS["AMQP_QUEUE_NAME"], durable=True)
 
         print(" [*] Waiting for messages. To exit press CTRL + C.")
 
         channel.basic_consume(
-            queue=queue_name,
+            queue=AMQP_SETTINGS["AMQP_QUEUE_NAME"],
             on_message_callback=self.callback,
         )
 

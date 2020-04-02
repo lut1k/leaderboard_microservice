@@ -2,7 +2,18 @@ import random
 import pika
 import json
 import time
-from tima_microservice.settings import AMQP_SETTINGS
+
+
+AMQP_SETTINGS = {
+    'AMQP_USER': 'admin',
+    "AMQP_PASSWORD": 'admin',
+    "AMQP_HOST": 'localhost',
+    "AMQP_PORT": 5672,
+    "AMQP_VIRTUALHOST": '/',
+    "AMQP_EXCHANGE_NAME": 'leaderboard_exchange',
+    "AMQP_QUEUE_NAME": 'leaderboard_queue',
+    "AMQP_ROUTING_KEY": 'leaderboard_key',
+}
 
 
 class MockSender:
@@ -23,6 +34,11 @@ class MockSender:
         channel = connection.channel()
 
         channel.exchange_declare(exchange=AMQP_SETTINGS["AMQP_EXCHANGE_NAME"], exchange_type='direct')
+        channel.queue_declare(queue=AMQP_SETTINGS["AMQP_QUEUE_NAME"], durable=True)
+        channel.queue_bind(queue=AMQP_SETTINGS["AMQP_QUEUE_NAME"],
+                           exchange=AMQP_SETTINGS["AMQP_EXCHANGE_NAME"],
+                           routing_key=AMQP_SETTINGS["AMQP_ROUTING_KEY"],
+                           )
 
         index = 1
         while index:
