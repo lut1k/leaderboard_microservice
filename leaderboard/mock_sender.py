@@ -1,4 +1,6 @@
 import random
+import sys
+
 import pika
 import json
 import time
@@ -19,7 +21,8 @@ AMQP_SETTINGS = {
 class MockSender:
     @staticmethod
     def _get_connection():
-        credentials = pika.PlainCredentials(AMQP_SETTINGS["AMQP_USER"], AMQP_SETTINGS["AMQP_PASSWORD"])
+        credentials = pika.PlainCredentials(AMQP_SETTINGS["AMQP_USER"],
+                                            AMQP_SETTINGS["AMQP_PASSWORD"])
 
         parameters = pika.ConnectionParameters(AMQP_SETTINGS["AMQP_HOST"],
                                                AMQP_SETTINGS["AMQP_PORT"],
@@ -40,13 +43,14 @@ class MockSender:
                            routing_key=AMQP_SETTINGS["AMQP_ROUTING_KEY"],
                            )
 
-        index = 1
-        while index:
+        while True:
+            random_user_id = random.randint(1, 3000000)
+            random_player_position = random.randint(1, 3000000)
             message = {
-                'user_id': index,
+                'user_id': random_user_id,
                 'rating': round(random.uniform(1, 10), 1),
                 'datetime': int(time.time()),
-                'position': index,  # TODO убарть позицию из сообщения после изучения memcached.
+                'position': random_player_position,  # TODO убарть позицию из сообщения после изучения.
             }
             channel.basic_publish(
                 exchange=AMQP_SETTINGS["AMQP_EXCHANGE_NAME"],
@@ -56,9 +60,7 @@ class MockSender:
                     delivery_mode=2,  # make message persistent
                 ),
             )
-
-            print(" [x] Sent {}".format(message))
-            index += 1
+            sys.stdout.write(" [x] Sent {}\n".format(message))
             time.sleep(0.02)
 
         connection.close()

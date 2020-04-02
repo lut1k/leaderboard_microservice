@@ -1,3 +1,5 @@
+import sys
+
 from django.db import models, IntegrityError
 
 
@@ -12,11 +14,3 @@ class LeaderBoard(models.Model):
 
     def __str__(self):
         return "user_id--{}, rating--{}".format(self.user_id, self.rating)
-
-    def save(self, *args, **kwargs):
-        try:
-            super().save(*args, **kwargs)
-            # TODO каким образом уведомлять о сохранении? И надо ли.
-            print("Created user with user_id <{}>.".format(self.user_id))
-        except IntegrityError:
-            print("user_id - {} is all ready exist".format(self.user_id))
