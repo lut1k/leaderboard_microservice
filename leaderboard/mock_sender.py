@@ -50,7 +50,6 @@ class MockSender:
                 'user_id': random_user_id,
                 'rating': round(random.uniform(1, 10), 1),
                 'datetime': int(time.time()),
-                'position': random_player_position,  # TODO убарть позицию из сообщения после изучения.
             }
             channel.basic_publish(
                 exchange=AMQP_SETTINGS["AMQP_EXCHANGE_NAME"],

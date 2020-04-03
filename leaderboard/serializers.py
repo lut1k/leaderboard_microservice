@@ -6,4 +6,4 @@ class LeaderBoardSerializer(serializers.ModelSerializer):
     """Class serializes model LeaderBoard"""
     class Meta:
         model = LeaderBoard
-        fields = ("user_id", "rating", "position")
+        fields = ("user_id", "rating", "date_time")

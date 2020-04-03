@@ -14,7 +14,7 @@ class LeaderBoardAPIView(ListAPIView):
         player_position = self.request.GET.get('position')
         filter_field = self.request.GET.get('filter')
         filter_dict = {
-            filter_field: player_position
+            filter_field: player_position,
         }
         if filter_field:
             return get_list_or_404(LeaderBoard, **filter_dict)

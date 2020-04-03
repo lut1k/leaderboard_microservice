@@ -16,14 +16,13 @@ class RecevieMessages:
             'user_id': message['user_id'],
             'rating': message['rating'],
             'date_time': datetime.datetime.fromtimestamp(message['datetime']),
-            'position': message['position']
         }
         player_from_message = LeaderBoard(**player_attributes)
         player_from_db = LeaderBoard.objects.select_for_update().filter(user_id=player_attributes['user_id'])
 
         with transaction.atomic():
             if len(player_from_db) == 1:
-                player_from_db[0].save(update_fields=('rating', 'date_time', 'position'))
+                player_from_db[0].save(update_fields=('rating', 'date_time'))
                 sys.stdout.write("Updated data for player with user_id - {}.\n".format(player_from_db[0].user_id))
                 return channel.basic_ack(delivery_tag=method.delivery_tag)
 
