@@ -1,6 +1,5 @@
 import random
 import sys
-
 import pika
 import json
 import time
@@ -45,10 +44,9 @@ class MockSender:
 
         while True:
             random_user_id = random.randint(1, 3000000)
-            random_player_position = random.randint(1, 3000000)
             message = {
                 'user_id': random_user_id,
-                'rating': round(random.uniform(1, 10), 1),
+                'rating': round(random.uniform(1, 100), 1),
                 'datetime': int(time.time()),
             }
             channel.basic_publish(
