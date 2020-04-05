@@ -59,7 +59,7 @@ class MockSender:
                     ),
                 )
                 sys.stdout.write(" [x] Sent {}\n".format(message))
-                time.sleep(0.5)
+                time.sleep(0.02)
         except KeyboardInterrupt:
             connection.close()
 
