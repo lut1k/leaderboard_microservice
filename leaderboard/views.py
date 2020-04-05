@@ -7,18 +7,19 @@ from leaderboard.serializers import LeaderBoardSerializer
 
 
 class LeaderBoardAPIView(ListAPIView):
-    queryset = LeaderBoardView.objects.all()
+    queryset = LeaderBoardView.objects.order_by('position').all()
     serializer_class = LeaderBoardSerializer
     pagination_class = PageNumberPagination
 
     def get_queryset(self):
-        player_position = self.request.GET.get('position')
-        filter_field = self.request.GET.get('filter')
-        filter_dict = {
-            filter_field: player_position,
-        }
-        if filter_field:
-            return get_list_or_404(LeaderBoardView, **filter_dict)
+        filter_field_from_query = self.request.GET.get('filter')
+        if filter_field_from_query:
+            filter_field = filter_field_from_query.split("=")[0]
+            position = filter_field_from_query.split("=")[1]
+            if filter_field == "<":
+                return LeaderBoardView.objects.order_by('position')[0:int(position) + 1]
+            elif filter_field == ">":
+                return LeaderBoardView.objects.order_by('position')[int(position):]
         return super().get_queryset()
 
 

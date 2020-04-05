@@ -42,25 +42,26 @@ class MockSender:
                            routing_key=AMQP_SETTINGS["AMQP_ROUTING_KEY"],
                            )
 
-        while True:
-            random_user_id = random.randint(1, 3000000)
-            message = {
-                'user_id': random_user_id,
-                'rating': round(random.uniform(1, 100), 1),
-                'datetime': int(time.time()),
-            }
-            channel.basic_publish(
-                exchange=AMQP_SETTINGS["AMQP_EXCHANGE_NAME"],
-                routing_key=AMQP_SETTINGS["AMQP_ROUTING_KEY"],
-                body=json.dumps(message),
-                properties=pika.BasicProperties(
-                    delivery_mode=2,  # make message persistent
-                ),
-            )
-            sys.stdout.write(" [x] Sent {}\n".format(message))
-            time.sleep(0.02)
-
-        connection.close()
+        try:
+            while True:
+                random_user_id = random.randint(1, 3000000)
+                message = {
+                    'user_id': random_user_id,
+                    'rating': round(random.uniform(1, 100), 1),
+                    'datetime': int(time.time()),
+                }
+                channel.basic_publish(
+                    exchange=AMQP_SETTINGS["AMQP_EXCHANGE_NAME"],
+                    routing_key=AMQP_SETTINGS["AMQP_ROUTING_KEY"],
+                    body=json.dumps(message),
+                    properties=pika.BasicProperties(
+                        delivery_mode=2,  # make message persistent
+                    ),
+                )
+                sys.stdout.write(" [x] Sent {}\n".format(message))
+                time.sleep(0.5)
+        except KeyboardInterrupt:
+            connection.close()
 
 
 if __name__ == '__main__':

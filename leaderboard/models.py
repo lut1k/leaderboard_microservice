@@ -21,7 +21,6 @@ class LeaderBoardView(models.Model):
     SELECT row_number() OVER(ORDER BY rating DESC, date_time) AS position, user_id AS id, rating, date_time
     FROM leaderboard_leaderboard;".
     """
-    # TODO допилить индексы и REFRESH периодический.
     position = models.BigIntegerField()
     id = models.IntegerField(primary_key=True)
     rating = models.FloatField()

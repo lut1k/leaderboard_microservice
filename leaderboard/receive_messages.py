@@ -50,7 +50,7 @@ class RecevieMessages:
 
         channel.queue_declare(queue=settings.AMQP_SETTINGS["AMQP_QUEUE_NAME"], durable=True)
 
-        print(" [*] Waiting for messages. To exit press CTRL + C.")
+        sys.stdout.write(" [*] Waiting for messages. To exit press CTRL + C.")
 
         channel.basic_consume(
             queue=settings.AMQP_SETTINGS["AMQP_QUEUE_NAME"],
