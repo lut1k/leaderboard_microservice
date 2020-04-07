@@ -91,6 +91,17 @@ DATABASES = {
 }
 
 
+AMQP_SETTINGS = {
+    'AMQP_USER': 'admin',
+    "AMQP_PASSWORD": 'admin',
+    "AMQP_HOST": 'localhost',
+    "AMQP_PORT": 5672,
+    "AMQP_VIRTUALHOST": '/',
+    "AMQP_EXCHANGE_NAME": 'leaderboard_exchange',
+    "AMQP_QUEUE_NAME": 'leaderboard_queue',
+    "AMQP_ROUTING_KEY": 'leaderboard_key',
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -121,7 +132,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
