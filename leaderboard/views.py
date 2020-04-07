@@ -12,14 +12,10 @@ class LeaderBoardAPIView(ListAPIView):
     pagination_class = PageNumberPagination
 
     def get_queryset(self):
-        filter_field_from_query = self.request.GET.get('filter')
-        if filter_field_from_query:
-            filter_field = filter_field_from_query.split("=")[0]
-            position = filter_field_from_query.split("=")[1]
-            if filter_field == "<":
-                return LeaderBoardView.objects.order_by('position')[0:int(position) + 1]
-            elif filter_field == ">":
-                return LeaderBoardView.objects.order_by('position')[int(position):]
+        filter_dict_from_query = dict(self.request.GET.items())
+        if filter_dict_from_query:
+            cleaned_filter_dict = {key: value for key, value in filter_dict_from_query.items() if key.startswith('position')}  # noqa
+            return LeaderBoardView.objects.filter(**cleaned_filter_dict)
         return super().get_queryset()
 
 

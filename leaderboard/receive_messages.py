@@ -8,22 +8,20 @@ from django.db import transaction
 from leaderboard.models import LeaderBoard
 
 
-class RecevieMessages:
+class ReceiveMessages:
     @staticmethod
     def callback(channel, method, properties, body):
         message = json.loads(body)
-        player_attributes = {
-            'user_id': message['user_id'],
-            'rating': message['rating'],
-            'date_time': datetime.datetime.fromtimestamp(message['datetime']),
-        }
-        player_from_message = LeaderBoard(**player_attributes)
-        player_from_db = LeaderBoard.objects.select_for_update().filter(user_id=player_attributes['user_id'])
+        player_from_message = LeaderBoard(user_id=message['user_id'],
+                                          rating=message['rating'],
+                                          date_time=datetime.datetime.fromtimestamp(message['datetime']),
+                                          )
 
         with transaction.atomic():
-            if len(player_from_db) == 1:
-                player_from_db[0].save(update_fields=('rating', 'date_time'))
-                sys.stdout.write("Updated data for player with user_id - {}.\n".format(player_from_db[0].user_id))
+            player_from_db = LeaderBoard.objects.select_for_update().filter(user_id=message['user_id']).first()
+            if player_from_db:
+                player_from_db.save(update_fields=('rating', 'date_time'))
+                sys.stdout.write("Updated data for player with user_id - {}.\n".format(player_from_db.user_id))
                 return channel.basic_ack(delivery_tag=method.delivery_tag)
 
         player_from_message.save()
@@ -50,7 +48,7 @@ class RecevieMessages:
 
         channel.queue_declare(queue=settings.AMQP_SETTINGS["AMQP_QUEUE_NAME"], durable=True)
 
-        sys.stdout.write(" [*] Waiting for messages. To exit press CTRL + C.")
+        sys.stdout.write(" [*] Waiting for messages. To exit press CTRL + C.\n")
 
         channel.basic_consume(
             queue=settings.AMQP_SETTINGS["AMQP_QUEUE_NAME"],
