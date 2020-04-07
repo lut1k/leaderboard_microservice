@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('date_time', models.DateTimeField()),
             ],
             options={
-                'ordering': ['rating', 'date_time'],
+                'ordering': ('rating', 'date_time')
             },
         ),
     ]
