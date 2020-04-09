@@ -93,14 +93,14 @@ DATABASES = {
 
 
 AMQP_SETTINGS = {
-    'AMQP_USER': 'admin',
-    "AMQP_PASSWORD": 'admin',
-    "AMQP_HOST": 'localhost',
-    "AMQP_PORT": 5672,
-    "AMQP_VIRTUALHOST": '/',
-    "AMQP_EXCHANGE_NAME": 'leaderboard_exchange',
-    "AMQP_QUEUE_NAME": 'leaderboard_queue',
-    "AMQP_ROUTING_KEY": 'leaderboard_key',
+    'AMQP_USER': os.getenv('AMQP_USER'),
+    "AMQP_PASSWORD": os.getenv('AMQP_PASSWORD'),
+    "AMQP_HOST": os.getenv('AMQP_HOST', 'localhost'),
+    "AMQP_PORT": os.getenv('AMQP_PORT', 5672),
+    "AMQP_VIRTUALHOST": os.getenv('AMQP_PORT', '/'),
+    "AMQP_EXCHANGE_NAME": os.getenv("AMQP_EXCHANGE_NAME", 'leaderboard_exchange'),
+    "AMQP_QUEUE_NAME": os.getenv("AMQP_QUEUE_NAME", 'leaderboard_queue'),
+    "AMQP_ROUTING_KEY": os.getenv("AMQP_ROUTING_KEY", 'leaderboard_key'),
 }
 
 # Password validation
