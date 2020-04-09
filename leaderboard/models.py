@@ -18,13 +18,16 @@ class LeaderBoardView(models.Model):
     Materialized View for relation LeaderBoard.
     View created bu query:
     "CREATE MATERIALIZED VIEW leaderboard_view AS
-    SELECT row_number() OVER(ORDER BY rating DESC, date_time) AS position, user_id AS id, rating, date_time
+    SELECT row_number() OVER(ORDER BY rating DESC, date_time) AS position, user_id, rating, date_time
     FROM leaderboard_leaderboard;".
     """
     position = models.BigIntegerField()
-    id = models.IntegerField(primary_key=True)
+    user_id = models.IntegerField(primary_key=True)
     rating = models.FloatField()
     date_time = models.DateTimeField()
+
+    def __str__(self):
+        return "user_id--{}, rating--{}".format(self.user_id, self.rating)
 
     class Meta:
         managed = False

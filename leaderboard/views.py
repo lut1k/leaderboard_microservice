@@ -7,7 +7,7 @@ from leaderboard.serializers import LeaderBoardSerializer
 
 
 class LeaderBoardAPIView(ListAPIView):
-    queryset = LeaderBoardView.objects.order_by('position').all()
+    queryset = LeaderBoardView.objects.all()
     serializer_class = LeaderBoardSerializer
     pagination_class = PageNumberPagination
 
@@ -25,7 +25,7 @@ class PlayerByIdAPIView(ListAPIView):
 
     def get_queryset(self):
         user_target = self.request.GET.getlist('user_id')
-        queryset = get_list_or_404(LeaderBoardView, id__in=user_target)
+        queryset = get_list_or_404(LeaderBoardView, user_id__in=user_target)
         return queryset
 
 
@@ -35,7 +35,7 @@ class PlayerAndNeighborsAPIView(ListAPIView):
 
     def get_queryset(self):
         user_target = self.request.GET.get('user_id')
-        player_from_request = LeaderBoardView.objects.filter(id=user_target)
+        player_from_request = LeaderBoardView.objects.filter(user_id=user_target)
         if len(player_from_request) == 1:
             player_position_from_request = player_from_request.values()[0]['position']
             player_and_neighbor = LeaderBoardView.objects.filter(position__range=(player_position_from_request - 1,
