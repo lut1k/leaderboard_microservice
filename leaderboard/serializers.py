@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from leaderboard.models import LeaderBoard, LeaderBoardView
+from leaderboard.models import LeaderBoardView
 
 
 class LeaderBoardSerializer(serializers.ModelSerializer):
     """Class serializes model LeaderBoardView"""
     class Meta:
         model = LeaderBoardView
-        fields = ('position', 'id', 'rating')
+        fields = ('position', 'user_id', 'rating')
