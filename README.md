@@ -1,4 +1,4 @@
-#Players leaderboard microservice.
+# Players leaderboard microservice.
 ## RabbitMQ, Django, PostgreSQL.
 Microservice that builds leaderboards based on player rating. Information on the current ranking of players comes in AMQP.
 <br>
@@ -9,4 +9,4 @@ higher position in the leaderboard).
 ### Microservice architecture.
 ![Microservice architecture](Instructions/architecture.png)
 ### Deployment instructions.
-Deployment instructions can be found in [instructions](Instructions/deploi_instruction.pdf).
+Deployment instructions can be found in [instructions](Instructions/deploy_instruction.pdf).
