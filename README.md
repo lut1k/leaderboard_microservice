@@ -7,6 +7,6 @@ Message to microservice comes in JSON: {“user_id”: int, “rating”: float,
 Leaderboard generated  by [Materialized View](https://postgrespro.ru/docs/postgrespro/9.5/rules-materializedviews) PostgreSQL (the higher the player’s rating, the
 higher position in the leaderboard).
 ### Microservice architecture.
-![Microservice architecture](Instructions/architecture.png)
+![Microservice architecture](Instructions/micro_architecture.png)
 ### Deployment instructions.
 Deployment instructions can be found in [instructions](Instructions/deploy_instruction.pdf).
