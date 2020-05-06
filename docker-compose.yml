@@ -11,6 +11,8 @@ services:
   leaderboard_microservice:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
+    env_file:
+      - variables.env
     volumes:
       - .:/code
     ports:
@@ -22,7 +24,7 @@ services:
 #  receive_messages:
 #
 #  refresh_leaderboardview:
-#
+
 #  mock_sender:
 
 #  rabbitmq:
