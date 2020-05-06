@@ -3,12 +3,15 @@ version: '3'
 services:
   db:
     image: postgres
+    build:
+      context: postgres
+      dockerfile: Dockerfile
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
-  leaderboard_microservice:
+  microservice:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     env_file:
