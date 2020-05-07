@@ -3,9 +3,8 @@ version: '3'
 services:
   db:
     image: postgres
-    build:
-      context: postgres
-      dockerfile: Dockerfile
+    volumes:
+      - ./postgres/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -16,18 +15,29 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     env_file:
       - variables.env
-    volumes:
-      - .:/code
     ports:
       - "8000:8000"
     depends_on:
       - db
-#      - rabbitmq
+      - migration
+
+  migration:
+    build: .
+    command: python manage.py migrate --noinput
+    env_file:
+      - variables.env
+    depends_on:
+      - db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
 #  receive_messages:
-#
+
 #  refresh_leaderboardview:
 
 #  mock_sender:
-
-#  rabbitmq:
