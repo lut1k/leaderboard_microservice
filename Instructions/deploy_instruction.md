@@ -70,6 +70,26 @@ $pip install -r requirements.txt
 
 10.The result of the work can be seen at the URL: yourhost:8000/leaderboard/players.
 
-### II. Deploying a microservice with [Docker](https://www.docker.com/).
+## II. Deploying a microservice with [Docker](https://www.docker.com/).
 
-In process ...
+1.You need to clone the repository.
+
+`$git clone https://github.com/lut1k/leaderboard_microservice.git`
+
+2.To run the app, `docker` and `docker-compose` must be installed on your system. For installation
+instructions refer to the Docker [docs](https://docs.docker.com/compose/install/). 
+
+3.The app can be run in development mode using Django's built in web server simply by executing
+
+```bash
+cd leaderboard_microservice
+docker-compose up
+```
+
+To remove all containers in the cluster use
+
+```bash
+docker-compose down
+```
+
+4.In process....
