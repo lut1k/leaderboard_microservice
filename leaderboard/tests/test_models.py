@@ -42,7 +42,6 @@ class LeaderBoardViewTest(TestCase):
         user_id_with_first_position = ordered_users_from_leaderboard.first().user_id
         user_id_with_last_position = ordered_users_from_leaderboard.last().user_id
 
-        #TODO данные из materialized view не надо сортировать, но refresh ее сортирует ...
         users_from_leaderboard_view = LeaderBoardView.objects.order_by('-rating', 'date_time')
         first_position_from_leaderboardview = users_from_leaderboard_view.first().user_id
         last_position_from_leaderboardview = users_from_leaderboard_view.last().user_id

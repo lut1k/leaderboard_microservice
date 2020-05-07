@@ -10,7 +10,7 @@ class Command(BaseCommand):
         self.stdout.write("Start the process of refreshing materialized view 'leaderboard_view'.")
         while True:
             self.refresh_materialized_view()
-            time.sleep(60)
+            time.sleep(30)
 
     def refresh_materialized_view(self):
         with transaction.atomic():

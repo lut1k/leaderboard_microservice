@@ -3,6 +3,7 @@ version: '3'
 services:
   db:
     image: postgres
+    container_name: postgres
     volumes:
       - ./postgres/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
     environment:
@@ -12,32 +13,43 @@ services:
 
   microservice:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    image: lut1k/microservice:latest
+    container_name: microservice
+    command: sh -c "python manage.py migrate --no-input && python manage.py runserver 0.0.0.0:8000"
     env_file:
       - variables.env
     ports:
       - "8000:8000"
     depends_on:
       - db
-      - migration
 
-  migration:
-    build: .
-    command: python manage.py migrate --noinput
+  refresh_leaderboardview:
+    image: lut1k/microservice:latest
+    container_name: refresh_leaderboardview
+    command: sh -c "python manage.py refresh_leaderboardview"
     env_file:
       - variables.env
     depends_on:
       - db
 
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+  receive_messages:
+    image: lut1k/microservice:latest
+    container_name: receive_messages
+    command: sh -c "python manage.py receive_messages"
+    env_file:
+      - variables.env
+    depends_on:
+      - db
 
-#  receive_messages:
-
-#  refresh_leaderboardview:
-
-#  mock_sender:
+#  rabbitmq:
+#    image: rabbitmq:3-management
+#    container_name: rabbitmq
+#    environment:
+#      RABBITMQ_DEFAULT_USER: "admin"
+#      RABBITMQ_DEFAULT_PASS: "admin"
+#      RABBITMQ_DEFAULT_VHOST: "/"
+#    volumes:
+#    - ./rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"

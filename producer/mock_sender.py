@@ -5,6 +5,9 @@ import json
 import time
 
 
+MESSAGE_SENDING_RATING = 1000
+
+
 AMQP_SETTINGS = {
     'AMQP_USER': 'admin',
     "AMQP_PASSWORD": 'admin',
@@ -59,7 +62,7 @@ class MockSender:
                     ),
                 )
                 sys.stdout.write(" [x] Sent {}\n".format(message))
-                time.sleep(0.02)
+                time.sleep(1/MESSAGE_SENDING_RATING)
         except KeyboardInterrupt:
             connection.close()
 
