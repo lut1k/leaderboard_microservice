@@ -97,7 +97,7 @@ AMQP_SETTINGS = {
     "AMQP_PASSWORD": os.getenv('AMQP_PASSWORD'),
     "AMQP_HOST": os.getenv('AMQP_HOST', 'localhost'),
     "AMQP_PORT": os.getenv('AMQP_PORT', 5672),
-    "AMQP_VIRTUALHOST": os.getenv('AMQP_PORT', '/'),
+    "AMQP_VIRTUALHOST": os.getenv('AMQP_VIRTUALHOST', '/'),
     "AMQP_EXCHANGE_NAME": os.getenv("AMQP_EXCHANGE_NAME", 'leaderboard_exchange'),
     "AMQP_QUEUE_NAME": os.getenv("AMQP_QUEUE_NAME", 'leaderboard_queue'),
     "AMQP_ROUTING_KEY": os.getenv("AMQP_ROUTING_KEY", 'leaderboard_key'),
