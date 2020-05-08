@@ -9,8 +9,8 @@
 - [Django REST Framework](https://www.django-rest-framework.org/);
 
 
-For the micro service to work, you must [install](https://www.postgresql.org/download/) PostgreSQL and [install](https://www.psycopg.org/) psycopg2 on the computer. 
-Next, create the database and user in PostgreSQL.
+For the microservice to work, you must [install](https://www.postgresql.org/download/) PostgreSQL and 
+[install](https://www.psycopg.org/) psycopg2 on the computer. Next, create the database and user in PostgreSQL.
 ```PostgreSQL
 #CREATE DATABASE microservice_leaderboard;
 #CREATE ROLE microservice_user WITH ENCRYPTED PASSWORD ‘password’;
@@ -47,7 +47,7 @@ export AMQP_USER=admin
 export AMQP_PASSWORD=admin
 ```
 
-6.Activate the virtual environment and install the dependencies from the requirements.txt file
+6.Activate the virtual environment and install the dependencies from the requirements.txt file.
 
 ```
 $source venv/bin/activate
@@ -62,7 +62,8 @@ $pip install -r requirements.txt
 
 - `$python manage.py receive_messages` - starts the consumer in AMQP, receives messages and sends them to the database;
 - `$python manage.py refresh_leaderboard` - starts the update process Materialized View PostgreSQL;
-- `$python manage.py runserver` - starts a lightweight development Web server on the local machine. By default, the server runs on port 8000 on the IP address 127.0.0.1. You can pass in an IP address and port number explicitly.
+- `$python manage.py runserver` - starts a lightweight development Web server on the local machine. By default, the server 
+runs on port 8000 on the IP address 127.0.0.1. You can pass in an IP address and port number explicitly.
 
 9.The project also has an imitation of the AMQP producer, it can be launched in a separate process to send messages to RabbitMQ:
 
@@ -79,17 +80,26 @@ $pip install -r requirements.txt
 2.To run the app, `docker` and `docker-compose` must be installed on your system. For installation
 instructions refer to the Docker [docs](https://docs.docker.com/compose/install/). 
 
-3.The app can be run in development mode using Django's built in web server simply by executing
+3.The app can be run in development mode using Django's built in web server simply by executing:
 
 ```bash
 cd leaderboard_microservice
 docker-compose up
 ```
 
-To remove all containers in the cluster use
+To remove all containers in the cluster use:
 
 ```bash
 docker-compose down
 ```
 
-4.In process....
+4.After starting the application in Docker, the ports are open: 8000 - `microservice` and 15672 - `rabbimq`.
+
+5.To imitate the producer and send messages to the rabbit, use `/producer/mock_sender.py`. 
+To do this, create virtual environment `$python3 –m venv venv`. Activate the virtual environment and install the 
+dependencies from the requirements.txt file. 
+```
+$source venv/bin/activate
+$pip install -r requirements.txt
+$python producer/mock_sender.py
+```

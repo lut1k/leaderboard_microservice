@@ -10,6 +10,8 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    networks:
+      - main
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -20,6 +22,8 @@ services:
       RABBITMQ_DEFAULT_PASS: "admin"
     volumes:
       - ./rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
+    networks:
+      - main
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -33,6 +37,8 @@ services:
       - variables.env
     ports:
       - "8000:8000"
+    networks:
+      - main
     depends_on:
       - db
       - rabbitmq
@@ -45,6 +51,8 @@ services:
       - variables.env
     depends_on:
       - db
+    networks:
+      - main
     restart: on-failure
 
   receive_messages:
@@ -53,6 +61,11 @@ services:
     command: sh -c "sleep 45; python manage.py receive_messages"
     env_file:
       - variables.env
+    networks:
+      - main
     depends_on:
       - db
       - rabbitmq
+
+networks:
+  main:
